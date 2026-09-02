@@ -1,0 +1,4 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { posts } from "@/lib/content";
+export default async function PostPage({ params }: { params: Promise<{ category: string; slug: string }> }) { const { category, slug } = await params; const post = posts.find((item) => item.category === category && item.slug === slug && item.published); if (!post) notFound(); return <article className="mx-auto min-h-screen max-w-3xl px-5 py-28 md:px-8"><Link href={`/blog/${category}`} className="text-sm font-semibold text-lime-700">← Volver al diario</Link><p className="mt-12 text-sm font-bold uppercase tracking-[.2em] text-lime-700">{post.category}</p><h1 className="mt-4 text-5xl font-bold tracking-tight md:text-7xl">{post.title}</h1><p className="mt-6 text-xl leading-8 text-zinc-600">{post.excerpt}</p><hr className="my-12 border-black/10"/><div className="max-w-2xl text-lg leading-8 text-zinc-800"><p>{post.content}</p></div></article>; }

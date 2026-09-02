@@ -1,0 +1,3 @@
+import { NextResponse } from "next/server";
+import { getAdminAuth } from "@/lib/firebase/admin";
+export async function POST(request: Request) { try { const { idToken } = await request.json(); const decoded = await getAdminAuth().verifyIdToken(idToken); if (decoded.admin !== true) return NextResponse.json({ error: "No autorizado" }, { status: 403 }); const session = await getAdminAuth().createSessionCookie(idToken, { expiresIn: 1000 * 60 * 60 * 24 * 5 }); const response = NextResponse.json({ ok: true }); response.cookies.set("session", session, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", maxAge: 60 * 60 * 24 * 5, path: "/" }); return response; } catch { return NextResponse.json({ error: "Sesión no válida" }, { status: 401 }); } }

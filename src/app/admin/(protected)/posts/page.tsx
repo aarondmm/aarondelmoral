@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { posts } from "@/lib/content";
+export default function AdminPostsPage() { return <><div className="flex items-center justify-between"><h1 className="text-3xl font-bold">Publicaciones</h1><Link href="/admin/posts/new" className="rounded-full bg-zinc-950 px-4 py-2 text-sm text-white">Nueva publicación</Link></div><div className="mt-6 grid gap-3">{posts.map((post) => <article className="rounded-2xl bg-white p-5" key={post.id}><p className="text-xs font-bold uppercase text-lime-700">{post.category}</p><h2 className="mt-1 text-xl font-bold">{post.title}</h2></article>)}</div></>; }

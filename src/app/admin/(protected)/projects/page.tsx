@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { projects } from "@/lib/content";
+export default function AdminProjectsPage() { return <><div className="flex items-center justify-between"><h1 className="text-3xl font-bold">Proyectos</h1><Link href="/admin/projects/new" className="rounded-full bg-zinc-950 px-4 py-2 text-sm text-white">Nuevo proyecto</Link></div><div className="mt-6 grid gap-3">{projects.map((project) => <article className="rounded-2xl bg-white p-5" key={project.id}><p className="text-xs font-bold uppercase text-lime-700">{project.category}</p><h2 className="mt-1 text-xl font-bold">{project.title}</h2></article>)}</div></>; }

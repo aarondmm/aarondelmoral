@@ -1,69 +1,17 @@
-import Image from "next/image";
+import { ArrowDownRight, Bike, Code2, Heart, Map } from "lucide-react";
+import Link from "next/link";
+import { ContactForm } from "@/components/contact-form";
+import { ProjectsGrid } from "@/components/projects-grid";
+import { SiteHeader } from "@/components/site-header";
+import { Reveal } from "@/components/ui/reveal";
+
+const passions = [[Map, "Viajes", "Curiosidad para cambiar de perspectiva.", "viajes"], [Bike, "Skate", "Paciencia, equilibrio y un poco de riesgo.", "skate"], [Code2, "Desarrollo", "Detalles que hacen que todo fluya.", "desarrollo"], [Heart, "Espiritualidad", "Conocerme mejor para vivir con más intención.", "espiritualidad"]] as const;
 
 export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+  return <><SiteHeader /><main>
+    <section className="mx-auto flex min-h-[92svh] max-w-7xl items-end px-5 pb-16 pt-28 md:px-8"><Reveal><p className="mb-5 text-sm font-bold uppercase tracking-[.2em] text-lime-700">Developer · Traveler · Skater</p><h1 className="max-w-5xl text-5xl font-bold leading-[.96] tracking-[-.06em] sm:text-7xl md:text-9xl">Construyo sitios con <span className="text-lime-600">energía</span>, propósito y movimiento.</h1><div className="mt-10 flex flex-wrap items-center gap-5"><a href="#proyectos" className="flex items-center gap-2 rounded-full bg-zinc-950 px-5 py-3 text-white">Ver proyectos <ArrowDownRight size={18}/></a><p className="max-w-sm text-zinc-600">Soy Aaron Del Moral. Transformo ideas en experiencias web memorables.</p></div></Reveal></section>
+    <section id="proyectos" className="bg-zinc-950 px-5 py-24 text-white md:px-8"><div className="mx-auto max-w-7xl"><Reveal><p className="text-lime-300">01 — Trabajo seleccionado</p><h2 className="mt-3 text-4xl font-bold tracking-tight md:text-6xl">Proyectos que avanzan.</h2></Reveal><div className="mt-12"><ProjectsGrid /></div></div></section>
+    <section id="sobre-mi" className="mx-auto max-w-7xl px-5 py-24 md:px-8"><Reveal><p className="text-lime-700">02 — Fuera de la pantalla</p><h2 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">Las mejores ideas no siempre empiezan en un escritorio.</h2></Reveal><div className="mt-10 grid gap-4 md:grid-cols-2">{passions.map(([Icon, title, text, slug]) => <Reveal key={title}><Link href={`/fuera-de-la-pantalla/${slug}`} className="group block rounded-3xl bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"><Icon className="text-lime-600"/><h3 className="mt-12 text-2xl font-bold">{title}</h3><p className="mt-2 text-zinc-600">{text}</p><span className="mt-6 inline-block text-sm font-semibold text-lime-700">Explorar →</span></Link></Reveal>)}</div></section>
+    <section id="contacto" className="bg-lime-300 px-5 py-24 md:px-8"><div className="mx-auto max-w-3xl"><Reveal><p className="font-medium">03 — Contacto</p><h2 className="mt-3 text-4xl font-bold tracking-tight md:text-6xl">¿Tienes una buena idea? Hagámosla real.</h2><ContactForm /></Reveal></div></section>
+  </main></>;
 }

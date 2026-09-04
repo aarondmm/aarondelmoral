@@ -1,8 +1,10 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { categoryLabels } from "@/lib/content";
 import { getPublishedPosts } from "@/lib/public-content";
 import type { BlogCategory } from "@/types/content";
+export async function generateMetadata({ params }: { params: Promise<{ category: string }> }): Promise<Metadata> { const { category } = await params; const label = category in categoryLabels ? categoryLabels[category as BlogCategory] : "Blog"; return { title: label, description: `Artículos de ${label.toLowerCase()} de Aaron Del Moral.`, alternates: { canonical: `/blog/${category}` } }; }
 
 export default async function BlogCategoryPage({ params }: { params: Promise<{ category: string }> }) {
   const { category } = await params;

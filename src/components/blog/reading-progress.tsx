@@ -1,0 +1,3 @@
+"use client";
+import { useEffect, useState } from "react";
+export function ReadingProgress() { const [progress, setProgress] = useState(0); useEffect(() => { const update = () => { const height = document.documentElement.scrollHeight - window.innerHeight; setProgress(height > 0 ? Math.min(100, (window.scrollY / height) * 100) : 0); }; update(); window.addEventListener("scroll", update, { passive: true }); return () => window.removeEventListener("scroll", update); }, []); return <div className="fixed inset-x-0 top-0 z-[60] h-1 bg-transparent"><div className="h-full bg-lime-500 transition-[width] duration-100" style={{ width: `${progress}%` }}/></div>; }

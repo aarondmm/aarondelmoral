@@ -1,0 +1,4 @@
+"use client";
+import { Moon, Sun } from "lucide-react";
+import { useEffect, useState } from "react";
+export function ThemeToggle() { const [dark, setDark] = useState(false); useEffect(() => { const saved = localStorage.getItem("theme"); const enabled = saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; setDark(enabled); document.documentElement.classList.toggle("dark", enabled); }, []); function toggle() { const next = !dark; setDark(next); localStorage.setItem("theme", next ? "dark" : "light"); document.documentElement.classList.toggle("dark", next); } return <button onClick={toggle} aria-label="Cambiar apariencia" className="grid size-8 place-items-center rounded-full border border-black/10 transition hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10">{dark ? <Sun size={15}/> : <Moon size={15}/>}</button>; }

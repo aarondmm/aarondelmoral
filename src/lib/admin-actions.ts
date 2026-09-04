@@ -13,7 +13,7 @@ export async function createPost(data: FormData) {
   await requireAdmin();
   const title = value(data, "title"); const category = value(data, "category"); const content = value(data, "content");
   if (!title || !content || !["viajes", "skate", "desarrollo"].includes(category)) throw new Error("Completa los campos obligatorios.");
-  await getAdminDb().collection("posts").add({ title, slug: slugify(value(data, "slug") || title), excerpt: value(data, "excerpt"), content, category, coverImage: value(data, "coverImage"), tags: value(data, "tags").split(",").map((tag) => tag.trim()).filter(Boolean), published: data.get("published") === "on", publishedAt: data.get("published") === "on" ? FieldValue.serverTimestamp() : null, createdAt: FieldValue.serverTimestamp(), updatedAt: FieldValue.serverTimestamp() });
+  await getAdminDb().collection("posts").add({ title, slug: slugify(value(data, "slug") || title), excerpt: value(data, "excerpt"), content, translations: { en: { title: value(data, "titleEn"), excerpt: value(data, "excerptEn"), content: value(data, "contentEn") } }, category, coverImage: value(data, "coverImage"), tags: value(data, "tags").split(",").map((tag) => tag.trim()).filter(Boolean), published: data.get("published") === "on", publishedAt: data.get("published") === "on" ? FieldValue.serverTimestamp() : null, createdAt: FieldValue.serverTimestamp(), updatedAt: FieldValue.serverTimestamp() });
   revalidatePath("/admin/posts"); revalidatePath("/"); redirect("/admin/posts");
 }
 
@@ -21,7 +21,7 @@ export async function createProject(data: FormData) {
   await requireAdmin();
   const title = value(data, "title"); const description = value(data, "description"); const category = value(data, "category");
   if (!title || !description || !["web", "app", "landing", "ecommerce"].includes(category)) throw new Error("Completa los campos obligatorios.");
-  await getAdminDb().collection("projects").add({ title, slug: slugify(value(data, "slug") || title), description, category, technologies: value(data, "technologies").split(",").map((item) => item.trim()).filter(Boolean), demoUrl: value(data, "demoUrl"), coverImage: value(data, "coverImage"), gallery: value(data, "gallery").split("\n").map((item) => item.trim()).filter(Boolean), featured: data.get("featured") === "on", published: data.get("published") === "on", createdAt: FieldValue.serverTimestamp(), updatedAt: FieldValue.serverTimestamp() });
+  await getAdminDb().collection("projects").add({ title, slug: slugify(value(data, "slug") || title), description, translations: { en: { title: value(data, "titleEn"), description: value(data, "descriptionEn") } }, category, technologies: value(data, "technologies").split(",").map((item) => item.trim()).filter(Boolean), demoUrl: value(data, "demoUrl"), coverImage: value(data, "coverImage"), gallery: value(data, "gallery").split("\n").map((item) => item.trim()).filter(Boolean), featured: data.get("featured") === "on", published: data.get("published") === "on", createdAt: FieldValue.serverTimestamp(), updatedAt: FieldValue.serverTimestamp() });
   revalidatePath("/admin/projects"); revalidatePath("/"); redirect("/admin/projects");
 }
 

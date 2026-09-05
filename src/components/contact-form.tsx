@@ -1,3 +1,28 @@
 "use client";
+
 import { useState } from "react";
-export function ContactForm({ language = "es" }: { language?: "es" | "en" }) { const copy = language === "en" ? { name: "Your name", message: "Tell me what you have in mind", send: "Send message", sending: "Sending...", thanks: "Thanks! I’ll get back to you as soon as possible.", error: "Something went wrong." } : { name: "Tu nombre", message: "Cuéntame qué tienes en mente", send: "Enviar mensaje", sending: "Enviando...", thanks: "¡Gracias! Te responderé lo antes posible.", error: "Ha ocurrido un error." }; const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle"); const [feedback, setFeedback] = useState(""); async function submit(event: React.FormEvent<HTMLFormElement>) { event.preventDefault(); setStatus("sending"); const form = new FormData(event.currentTarget); const response = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.fromEntries(form)) }); const body = await response.json(); if (response.ok) { setStatus("sent"); setFeedback(copy.thanks); event.currentTarget.reset(); } else { setStatus("error"); setFeedback(body.error ?? copy.error); } } return <form onSubmit={submit} className="mt-8 grid gap-3 sm:grid-cols-2"><input required name="name" placeholder={copy.name} className="rounded-xl border border-black/10 bg-white px-4 py-3 outline-none focus:border-lime-600"/><input required name="email" type="email" placeholder="you@email.com" className="rounded-xl border border-black/10 bg-white px-4 py-3 outline-none focus:border-lime-600"/><input name="company" tabIndex={-1} autoComplete="off" className="hidden"/><textarea required name="message" placeholder={copy.message} className="min-h-32 rounded-xl border border-black/10 bg-white px-4 py-3 outline-none focus:border-lime-600 sm:col-span-2"/><button disabled={status === "sending"} className="w-fit rounded-full bg-zinc-950 px-6 py-3 font-semibold text-white transition hover:scale-105 disabled:opacity-60" type="submit">{status === "sending" ? copy.sending : copy.send}</button>{status !== "idle" && <p className={`self-center text-sm ${status === "error" ? "text-red-700" : "text-zinc-700"}`}>{feedback}</p>}</form>; }
+
+export function ContactForm({ language = "es" }: { language?: "es" | "en" }) {
+  const copy = language === "en" ? { name: "Your name", message: "Tell me what you have in mind", send: "Send message", sending: "Sending...", thanks: "Thanks! I’ll get back to you as soon as possible.", error: "Something went wrong." } : { name: "Tu nombre", message: "Cuéntame qué tienes en mente", send: "Enviar mensaje", sending: "Enviando...", thanks: "¡Gracias! Te responderé lo antes posible.", error: "Ha ocurrido un error." };
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [feedback, setFeedback] = useState("");
+
+  async function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formElement = event.currentTarget;
+    setStatus("sending");
+    const form = new FormData(formElement);
+    const response = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.fromEntries(form)) });
+    const body = await response.json();
+    if (response.ok) {
+      formElement.reset();
+      setStatus("sent");
+      setFeedback(copy.thanks);
+    } else {
+      setStatus("error");
+      setFeedback(body.error ?? copy.error);
+    }
+  }
+
+  return <form onSubmit={submit} className="mt-8 grid gap-3 sm:grid-cols-2"><input required name="name" placeholder={copy.name} className="rounded-xl border border-black/10 bg-white px-4 py-3 outline-none focus:border-lime-600"/><input required name="email" type="email" placeholder="you@email.com" className="rounded-xl border border-black/10 bg-white px-4 py-3 outline-none focus:border-lime-600"/><input name="company" tabIndex={-1} autoComplete="off" className="hidden"/><textarea required name="message" placeholder={copy.message} className="min-h-32 rounded-xl border border-black/10 bg-white px-4 py-3 outline-none focus:border-lime-600 sm:col-span-2"/><button disabled={status === "sending"} className="w-fit rounded-full bg-zinc-950 px-6 py-3 font-semibold text-white transition hover:scale-105 disabled:opacity-60" type="submit">{status === "sending" ? copy.sending : copy.send}</button>{status !== "idle" && <p className={`self-center text-sm ${status === "error" ? "text-red-700" : "text-zinc-700"}`}>{feedback}</p>}</form>;
+}

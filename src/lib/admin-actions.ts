@@ -51,3 +51,20 @@ export async function deleteProject(data: FormData) {
   await requireAdmin(); const id = value(data, "id"); if (!id) throw new Error("Proyecto no válido.");
   await getAdminDb().collection("projects").doc(id).delete(); revalidatePath("/admin/projects"); revalidatePath("/"); revalidatePath("/en"); redirect("/admin/projects");
 }
+
+export async function toggleMessageRead(data: FormData) {
+  await requireAdmin();
+  const id = value(data, "id");
+  const read = value(data, "read") === "true";
+  if (!id) throw new Error("Mensaje no válido.");
+  await getAdminDb().collection("contactMessages").doc(id).update({ read: !read, updatedAt: FieldValue.serverTimestamp() });
+  revalidatePath("/admin/messages"); revalidatePath("/admin");
+}
+
+export async function deleteMessage(data: FormData) {
+  await requireAdmin();
+  const id = value(data, "id");
+  if (!id) throw new Error("Mensaje no válido.");
+  await getAdminDb().collection("contactMessages").doc(id).delete();
+  revalidatePath("/admin/messages"); revalidatePath("/admin");
+}
